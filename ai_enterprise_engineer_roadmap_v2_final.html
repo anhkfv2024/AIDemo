@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise AI Engineer Roadmap</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #eff6ff;
+            --secondary: #475569;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --success: #16a34a;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-top: 4px solid var(--primary);
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-top: 0;
+            font-size: 2.2rem;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin: 0.25rem;
+        }
+
+        /* Nút Export/Import */
+        .sync-controls {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--secondary);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        #file-upload {
+            display: none;
+        }
+
+        /* Khung Progress */
+        .progress-section {
+            margin-top: 1.5rem;
+            text-align: left;
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e2e8f0;
+            border-radius: 999px;
+            height: 12px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--success);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        #overall-progress-text {
+            font-weight: bold;
+            color: var(--success);
+            font-size: 1.2rem;
+        }
+
+        /* Styling cho thẻ Details (Thu gọn/Mở rộng) */
+        details {
+            margin-bottom: 1.5rem;
+        }
+
+        summary {
+            cursor: pointer;
+            list-style: none; /* Ẩn mũi tên mặc định */
+            outline: none;
+        }
+        
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .module {
+            background: var(--surface);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .module-header {
+            background: #f8fafc;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            border-bottom: 1px solid transparent;
+            transition: background 0.2s;
+        }
+
+        details[open] .module-header {
+            border-bottom-color: var(--border);
+            background: var(--primary-light);
+        }
+
+        .module-header h2 {
+            margin: 0;
+            color: var(--text-main);
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .module-header::after {
+            content: '▼';
+            font-size: 0.9rem;
+            color: var(--secondary);
+            transition: transform 0.3s;
+        }
+
+        details[open] > summary > .module-header::after {
+            transform: rotate(180deg);
+        }
+
+        .duration {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            font-weight: 600;
+            background: #e2e8f0;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            margin-right: 2rem;
+        }
+
+        /* Style cho Week */
+        details.week-details {
+            margin-bottom: 0;
+        }
+
+        .week-container {
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .week-container:last-child {
+            border-bottom: none;
+        }
+
+        .week-title {
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary);
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.2s;
+        }
+        
+        .week-title:hover {
+            background: #f1f5f9;
+        }
+
+        .week-title::after {
+            content: '+';
+            font-size: 1.2rem;
+            color: var(--primary);
+            transition: transform 0.2s;
+        }
+
+        details[open].week-details > summary > .week-title::after {
+            content: '−';
+        }
+
+        .task-list {
+            padding: 0 1.5rem 1.5rem 1.5rem;
+            margin: 0;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+
+        li:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        input[type="checkbox"] {
+            margin-top: 0.2rem;
+            margin-right: 1rem;
+            width: 1.2rem;
+            height: 1.2rem;
+            cursor: pointer;
+            accent-color: var(--success);
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .recap-box ul {
+            list-style: disc;
+            padding-left: 1.2rem;
+            margin: 0.5rem 0;
+        }
+        .recap-box li {
+            display: list-item;
+            background: none;
+            border: none;
+            padding: 0.15rem 0;
+            margin-top: 0;
+        }
+        .recap-box li:hover {
+            box-shadow: none;
+        }
+        .recap-box ol {
+            padding-left: 1.2rem;
+            margin: 0.5rem 0;
+        }
+        .recap-box h4 {
+            margin-top: 1.25rem;
+            margin-bottom: 0.4rem;
+            color: #1e293b;
+        }
+        .recap-box table {
+            font-size: 0.92rem;
+        }
+
+
+        .task-title {
+            font-weight: 600;
+            display: block;
+            color: #1e293b;
+        }
+
+        .task-desc {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            display: block;
+            margin-top: 0.3rem;
+        }
+
+        .output-box {
+            background: #f0fdf4;
+            border-top: 1px solid #bbf7d0;
+            padding: 1.25rem 1.5rem;
+            color: #166534;
+        }
+
+        .output-box h4 {
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .math-formula {
+            background: #ffffff;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-family: monospace;
+            border: 1px solid #cbd5e1;
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: #0f172a;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🚀 Enterprise AI Engineer Roadmap</h1>
+        <p class="subtitle">Lộ trình tối ưu cho Dev (1-2h/ngày) • Kết hợp Thực chiến & Nền tảng</p>
+        <div>
+            <span class="badge">Java Backend</span>
+            <span class="badge">Deployment</span>
+            <span class="badge">System Builder</span>
+            <span class="badge">Enterprise AI</span>
+        </div>
+        
+        <div class="sync-controls">
+            <button class="btn" onclick="exportProgress()">📥 Xuất Tiến Độ (Backup)</button>
+            <label class="btn" for="file-upload">📤 Tải Lên Tiến Độ</label>
+            <input type="file" id="file-upload" accept=".json" onchange="importProgress(event)">
+        </div>
+        <p style="font-size: 0.85rem; color: var(--secondary); margin-top: 0.5rem;">Tiến độ tự động lưu trên trình duyệt. Dùng nút Backup nếu bạn muốn copy file sang máy khác.</p>
+
+    </header>
+
+    <div class="progress-section">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <strong style="font-size: 1.1rem;">Tổng Quan Tiến Độ:</strong>
+            <span id="overall-progress-text">0%</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="overall-progress-bar"></div>
+        </div>
+    </div>
+
+    <!-- MODULE 1 -->
+    <details class="module" open>
+        <summary>
+            <div class="module-header">
+                <h2>🧱 Module 1: Python + LLM Thinking</h2>
+                <span class="duration">Tuần 1 - 3</span>
+            </div>
+        </summary>
+        
+        <details class="week-details">
+            <summary><div class="week-title">📅 Tuần 1: Nền tảng lập trình cho AI</div></summary>
+            <div class="task-list">
+                <ul>
+                    <li><input type="checkbox" id="m1-w1-d1"><div class="task-content"><span class="task-title">Setup Môi trường & Python cơ bản</span><span class="task-desc">Cài đặt Python, Virtual Environment (venv). Ôn tập cú pháp cơ bản.</span></div></li>
+                    <li><input type="checkbox" id="m1-w1-d2"><div class="task-content"><span class="task-title">Thư viện Requests & JSON</span><span class="task-desc">Cách gọi REST API thủ công, parse JSON response.</span></div></li>
+                    <li><input type="checkbox" id="m1-w1-d3"><div class="task-content"><span class="task-title">Quản lý biến môi trường (.env)</span><span class="task-desc">Sử dụng python-dotenv để bảo mật API keys. Tuyệt đối không hardcode.</span></div></li>
+                    <li><input type="checkbox" id="m1-w1-d4"><div class="task-content"><span class="task-title">Lập trình Bất đồng bộ (Async Python)</span><span class="task-desc">Hiểu cơ bản về async/await để xử lý I/O bound (gọi API không bị block).</span></div></li>
+                    <li><input type="checkbox" id="m1-w1-d5"><div class="task-content"><span class="task-title">Tổng hợp Tuần 1</span><span class="task-desc">Viết 1 script nhỏ gọi API lấy thời tiết (hoặc public API) dùng async và lưu key trong .env.</span></div></li>
+                </ul>
+            </div>
+        </details>
+
+        <details class="week-details">
+            <summary><div class="week-title">📅 Tuần 2: Gọi LLM API & LiteLLM</div></summary>
+            <div class="task-list">
+                <ul>
+                    <li><input type="checkbox" id="m1-w2-d1"><div class="task-content"><span class="task-title">Làm quen LiteLLM</span><span class="task-desc">Cài đặt và setup LiteLLM. Hiểu tại sao cần unify API.</span></div></li>
+                    <li><input type="checkbox" id="m1-w2-d2"><div class="task-content"><span class="task-title">Multi-LLM Caller</span><span class="task-desc">Viết script gọi luân phiên OpenAI, Gemini, Anthropic bằng cùng 1 cấu trúc code.</span></div></li>
+                    <li><input type="checkbox" id="m1-w2-d3"><div class="task-content"><span class="task-title">Token & Cost Tracking</span><span class="task-desc">Sử dụng hàm của LiteLLM để lấy số token đầu vào/đầu ra và tính chi phí ($).</span></div></li>
+                    <li><input type="checkbox" id="m1-w2-d4"><div class="task-content"><span class="task-title">Khám phá Parameters</span><span class="task-desc">Thử nghiệm thay đổi Temperature, Max Tokens, Top-p. Ghi nhận sự khác biệt.</span></div></li>
+                    <li><input type="checkbox" id="m1-w2-d5"><div class="task-content"><span class="task-title">Xử lý Error & Timeout</span><span class="task-desc">Bắt lỗi Rate Limit, Timeout khi gọi API LLM.</span></div></li>
+                </ul>
+            </div>
+        </details>
+
+        <details class="week-details">
+            <summary><div class="week-title">📅 Tuần 3: Foundation - Toán & Xác suất của LLM</div></summary>
+            <div class="task-list">
+                <ul>
+                    <li><input type="checkbox" id="m1-w3-d1"><div class="task-content"><span class="task-title">Xác suất cơ bản (Probability)</span><span class="task-desc">Ôn lại xác suất rời rạc. Hiểu rằng LLM dự đoán từ bằng xác suất.</span></div></li>
+                    <li><input type="checkbox" id="m1-w3-d2"><div class="task-content"><span class="task-title">Token Probability</span><span class="task-desc">Cách LLM tính điểm (logits) cho từng token tiếp theo trong từ điển.</span></div></li>
+                    <li><input type="checkbox" id="m1-w3-d3"><div class="task-content"><span class="task-title">Softmax Intuition</span><span class="task-desc">Hàm Softmax biến đổi điểm logits thành phần trăm xác suất (0-1). <br><code class="math-formula">softmax(z_i) = exp(z_i) / Σ exp(z_j)</code></span></div></li>
+                    <li><input type="checkbox" id="m1-w3-d4"><div class="task-content"><span class="task-title">Temperature Math</span><span class="task-desc">Hiểu toán học của Temperature: T > 1 làm mượt phân phối, T < 1 làm nhọn phân phối.</span></div></li>
+                    <li><input type="checkbox" id="m1-w3-d5"><div class="task-content"><span class="task-title">Đóng gói Module 1</span><span class="task-desc">Review lại toàn bộ code & khái niệm.</span></div></li>
+                </ul>
+            </div>
+        </details>
+
+        <div class="output-box">
+            <h4>🎯 OUTPUT CẦN ĐẠT MODULE 1</h4>
+            <ul style="padding-left: 1rem; list-style-type: disc;">
+                <li>Script Multi-LLM caller hoạt động ổn định.</li>
+                <li>Hàm Token counter tự động.</li>
+                <li>Cost tracking logger (ghi file log chi phí mỗi lần gọi).</li>
+            </ul>
+        </div>
+    </details>
+
+    <!-- MODULE 2 -->
+    <details class="module">
+        <summary>
+            <div class="module-header">
+                <h2>🧱 Module 2: Prompting + Structured Output</h2>
+                <span class="duration">Tuần 4 - 5</span>
+            </div>
+        </summary>
+        
+        <details class="week-details">
+            <summary><div class="week-title">📅 Tuần 4: Prompt Engineering & Data Extraction</div></summary>
+            <div class="task-list">
+                <ul>
+                    <li><input type="checkbox" id="m2-w4-d1"><div class="task-content"><span class="task-title">Prompt Engineering cơ bản</span><span class="task-desc">Zero-shot, Few-shot prompting, Role-playing (System Prompt).</span></div></li>
+                    <li><input type="checkbox" id="m2-w4-d2"><div class="task-content"><span class="task-title">JSON Schema Design</span><span class="task-desc">Thiết kế cấu trúc JSON mong muốn để trích xuất dữ liệu.</span></div></li>
+                    <li><input type="checkbox" id="m2-w4-d3"><div class="task-content"><span class="task-title">Structured Output API</span><span class="task-desc">Sử dụng <code>response_format={ "type": "json_object" }</code> hoặc Pydantic với LiteLLM.</span></div></li>
+                    <li><input type="checkbox" id="m2-w4-d4"><div class="task-content"><span class="task-title">Extraction Task (Email Thương mại)</span><span class="task-desc">Viết prompt xử lý Email kinh doanh trích xuất: Người gửi, Mục đích, Deadline.</span></div></li>
+                    <li><input type="checkbox" id="m2-w4-d5"><div class="task-content"><span class="task-title">Chain of Thought (CoT)</span><span class="task-desc">Thêm bước "hãy suy nghĩ từng bước" trước khi trả về JSON để tăng độ chính xác.</span></div></li>
+                </ul>
+            </div>
+        </details>
+
+        <details class="week-details">
+            <summary><div class="week-title">📅 Tuần 5: Giảm Ảo Giác & Foundation Models</div></summary>
+            <div class="task-list">
+                <ul>
+                    <li><input type="checkbox" id="m2-w5-d1"><div class="task-content"><span class="task-title">Hallucination Reduction Techniques</span><span class="task-desc">Kỹ thuật "Nếu không biết, hãy trả lời là Không tìm thấy thông tin".</span></div></li>
+                    <li><input type="checkbox" id="m2-w5-d2"><div class="task-content"><span class="task-title">Context Window Deep Dive</span><span class="task-desc">Hiểu giới hạn cửa sổ ngữ cảnh. Chuyện gì xảy ra khi vượt quá giới hạn hoặc nhồi nhét quá nhiều?</span></div></li>
+                    <li><input type="checkbox" id="m2-w5-d3"><div class="task-content"><span class="task-title">Tokenization Internals</span><span class="task-desc">Thử nghiệm với Tiktoken. Phân tích chi phí token đối với các cấu trúc ngôn ngữ khác nhau.</span></div></li>
+                    <li><input type="checkbox" id="m2-w5-d4"><div class="task-content"><span class="task-title">Transformer Intuition</span><span class="task-desc">Đọc/xem giải thích trực quan về cơ chế Attention (không cần code lại từ đầu, chỉ cần hiểu).</span></div></li>
+                    <li><input type="checkbox" id="m2-w5-d5"><div class="task-content"><span class="task-title">Hoàn thiện Pipeline</span><span class="task-desc">Đóng gói script nhận input là Text, trả về JSON chuẩn xác 100%.</span></div></li>
+                </ul>
+            </div>
+        </details>
+
+        <div class="output-box">
+            <h4>🎯 OUTPUT CẦN ĐẠT MODULE 2</h4>
+            <ul style="padding-left: 1rem; list-style-type: disc;">
+                <li>Công cụ Email → JSON extractor chạy ổn định.</li>
+                <li>Stable prompt template (có thể tái sử dụng cho các form data khác).</li>
+            </ul>
+        </div>
+    </details>
+
+    <!-- MODULE 3 -->
+    <details class="module">
+        <summary>
+            <div class="module-header">
+                <h2>🧱 Module 3: Embedding + Vector Search</h2>
+                <span class="duration">Tuần 6 - 8</span>
+            </div>
+        </summary>
+        
+        <details class="week-details">
+            <summary><div class="week-title">📅 Tuần 6: Embedding & Vector Math</div></summary>
+            <div class="task-list">
+                <ul>
+                    <li><input type="checkbox" id="m3-w6-d1"><div class="task-content"><span class="task-title">Khái niệm Embedding</span><span class="task-desc">Biến text thành dãy số (vector). Dùng API lấy embedding (vd: text-embedding-3-small).</span></div></li>
+                    <li><input type="checkbox" id="m3-w6-d2"><div class="task-content"><span class="task-title">Toán Vector (Linear Algebra)</span><span class="task-desc">Hiểu vector là gì trong không gian N chiều. Phép cộng, trừ vector.</span></div></li>
+                    <li><input type="checkbox" id="m3-w6-d3"><div class="task-content"><span class="task-title">Toán Matrix cơ bản</span><span class="task-desc">Hiểu ma trận là tập hợp các vector. Phép nhân vô hướng (Dot Product).</span></div></li>
+                    <li><input type="checkbox" id="m3-w6-d4"><div class="task-content"><span class="task-title">Cosine Similarity Math</span><span class="task-desc">Hiểu công thức: <br><code class="math-formula">cos(θ) = (A · B) / (||A|| * ||B||)</code></span></div></li>
+                    <li><input type="checkbox" id="m3-w6-d5"><div class="task-content"><span class="task-title">Code Cosine Similarity Numpy</span><span class="task-desc">Viết hàm tính khoảng cách giữa 2 câu bằng numpy thuần túy để hiểu bản chất.</span></div></li>
+                </ul>
+            </div>
+        </details>
+
+        <details class="week-details">
+            <summary><div class="week-title">📅 Tuần 7: Chunking & pgvector Setup</div></summary>
+            <div class="task-list">
+                <ul>
+                    <li><input type="checkbox" id="m3-w7-d1"><div class="task-content"><span class="task-title">Chunking Strategies</span><span class="task-desc">Cách cắt nhỏ tài liệu: theo ký tự, theo từ, theo đoạn văn (Recursive Character Splitter).</span></div></li>
+                    <li><input type="checkbox" id="m3-w7-d2"><div class="task-content"><span class="task-title">Setup PostgreSQL</span><span class="task-desc">Cài đặt PostgreSQL (hoặc dùng Docker).</span></div></li>
+                    <li><input type="checkbox" id="m3-w7-d3"><div class="task-content"><span class="task-title">Cài đặt Extension pgvector</span><span class="task-desc">Enable extension vector trong PostgreSQL. Tạo bảng lưu trữ embedding.</span></div></li>
+                    <li><input type="checkbox" id="m3-w7-d4"><div class="task-content"><span class="task-title">Insert Data vào pgvector</span><span class="task-desc">Viết script đọc text, gọi API tạo embedding, insert vào database.</span></div></li>
+                    <li><input type="checkbox" id="m3-w7-d5"><div class="task-content"><span class="task-title">Thực thi Semantic Search (SQL)</span><span class="task-desc">Dùng toán tử <code>&lt;=&gt;</code> (cosine distance) trong pgvector để tìm kiếm.</span></div></li>
+                </ul>
+            </div>
+        </details>
+
+        <details class="week-details">
+            <summary><div class="week-title">📅 Tuần 8: Xử lý Document Doanh Nghiệp</div></summary>
+            <div class="task-list">
+                <ul>
+                    <li><input type="checkbox" id="m3-w8-d1"><div class="task-content"><span class="task-title">Đọc file PDF</span><span class="task-desc">Sử dụng PyMuPDF (fitz) để đọc text từ tài liệu nội bộ.</span></div></li>
+                    <li><input type="checkbox" id="m3-w8-d2"><div class="task-content"><span class="task-title">Xử lý Ngôn ngữ đặc thù</span><span class="task-desc">Phân tích văn bản tiếng Việt có dấu, định dạng bảng biểu. Test các chunk size phù hợp.</span></div></li>
+                    <li><input type="checkbox" id="m3-w8-d3"><div class="task-content"><span class="task-title">Build Search Flow</span><span class="task-desc">User input câu hỏi -> Embed câu hỏi -> Query pgvector -> Trả về top 3 chunks.</span></div></li>
+                    <li><input type="checkbox" id="m3-w8-d4"><div class="task-content"><span class="task-title">Tối ưu Index DB</span><span class="task-desc">Làm quen với HNSW index trong pgvector để tăng tốc độ search.</span></div></li>
+                    <li><input type="checkbox" id="m3-w8-d5"><div class="task-content"><span class="task-title">Kiểm thử độ chính xác</span><span class="task-desc">Đánh giá xem search bằng vector có tìm ra đúng đoạn văn cần thiết không.</span></div></li>
+                </ul>
+            </div>
+        </details>
+
+        <div class="output-box">
+            <h4>🎯 OUTPUT CẦN ĐẠT MODULE 3</h4>
+            <ul style="padding-left: 1rem; list-style-type: disc;">
+                <li>API / Script Semantic Search cho file PDF.</li>
+                <li>Retrieval chuẩn xác cho tài liệu doanh nghiệp.</li>
+            </ul>
+        </div>
+    </details>
+
+    <!-- MODULE 4 -->
+    <details class="module">
+        <summary>
+            <div class="module-header">
+                <h2>🧱 Module 4: RAG API Backend</h2>
+                <span class="duration">Tuần 9 - 11</span>
+            </div>
+        </summary>
+        
+        <details class="week-details">
+            <summary><div class="week-title">📅 Tuần 9: Xây dựng Backend với FastAPI</div></summary>
+            <div class="task-list">
+                <ul>
+                    <li><input type="checkbox" id="m4-w9-d1"><div class="task-content"><span class="task-title">FastAPI Foundation</span><span class="task-desc">Khởi tạo project FastAPI, Pydantic models cho request/response.</span></div></li>
+                    <li><input type="checkbox" id="m4-w9-d2"><div class="task-content"><span class="task-title">Upload File Endpoint</span><span class="task-desc">Tạo API endpoint cho phép client upload file PDF.</span></div></li>
+                    <li><input type="checkbox" id="m4-w9-d3"><div class="task-content"><span class="task-title">Tích hợp Background Tasks</span><span class="task-desc">Xử lý parse PDF và chunking trong background để không block API.</span></div></li>
+                    <li><input type="checkbox" id="m4-w9-d4"><div class="task-content"><span class="task-title">Retrieve Endpoint</span><span class="task-desc">Chuyển script search (Module 3) thành API endpoint RESTful.</span></div></li>
+                    <li><input type="checkbox" id="m4-w9-d5"><div class="task-content"><span class="task-title">Test bằng Postman/Swagger</span><span class="task-desc">Kiểm thử luồng upload -> search.</span></div></li>
+                </ul>
+            </div>
+        </details>
+
+        <details class="week-details">
+            <summary><div class="week-title">📅 Tuần 10: RAG Flow (Retrieve & Generate)</div></summary>
+            <div class="task-list">
+                <ul>
+                    <li><input type="checkbox" id="m4-w10-d1"><div class="task-content"><span class="task-title">Ghép nối Retrieve + Generate</span><span class="task-desc">Lấy context từ DB, nhét vào prompt, gọi LLM trả lời.</span></div></li>
+                    <li><input type="checkbox" id="m4-w10-d2"><div class="task-content"><span class="task-title">Prompt for RAG</span><span class="task-desc">Thiết kế system prompt: "Chỉ trả lời dựa trên context được cung cấp..."</span></div></li>
+                    <li><input type="checkbox" id="m4-w10-d3"><div class="task-content"><span class="task-title">Citation (Trích dẫn nguồn)</span><span class="task-desc">Yêu cầu LLM format câu trả lời kèm theo ID hoặc page number của chunk được dùng.</span></div></li>
+                    <li><input type="checkbox" id="m4-w10-d4"><div class="task-content"><span class="task-title">Xử lý Lịch sử Chat (Memory)</span><span class="task-desc">Lưu trữ mảng messages để model có ngữ cảnh của các câu hỏi trước.</span></div></li>
+                    <li><input type="checkbox" id="m4-w10-d5"><div class="task-content"><span class="task-title">Refactor & Tổ chức Code</span><span class="task-desc">Tách routers, services, database config (Chuẩn bị tư duy System).</span></div></li>
+                </ul>
+            </div>
+        </details>
+
+        <details class="week-details">
+            <summary><div class="week-title">📅 Tuần 11: Foundation - Ranking & BM25</div></summary>
+            <div class="task-list">
+                <ul>
+                    <li><input type="checkbox" id="m4-w11-d1"><div class="task-content"><span class="task-title">Information Retrieval Basics</span><span class="task-desc">Sự khác biệt giữa Keyword search và Semantic search.</span></div></li>
+                    <li><input type="checkbox" id="m4-w11-d2"><div class="task-content"><span class="task-title">BM25 Intuition</span><span class="task-desc">Hiểu thuật toán TF-IDF và BM25 (chấm điểm từ khóa hiếm/phổ biến).</span></div></li>
+                    <li><input type="checkbox" id="m4-w11-d3"><div class="task-content"><span class="task-title">Giới thiệu Hybrid Search</span><span class="task-desc">Concept kết hợp BM25 + Vector Search để cho kết quả hoàn hảo nhất.</span></div></li>
+                    <li><input type="checkbox" id="m4-w11-d4"><div class="task-content"><span class="task-title">Hoàn thiện API RAG</span><span class="task-desc">Xử lý lỗi, thêm logging.</span></div></li>
+                    <li><input type="checkbox" id="m4-w11-d5"><div class="task-content"><span class="task-title">Đóng gói Docker (Optional)</span><span class="task-desc">Viết Dockerfile để containerize FastAPI app.</span></div></li>
+                </ul>
+            </div>
+        </details>
+
+        <div class="output-box">
+            <h4>🎯 OUTPUT CẦN ĐẠT MODULE 4</h4>
+            <ul style="padding-left: 1rem; list-style-type: disc;">
+                <li>Backend API RAG hoàn chỉnh (Sẵn sàng cho frontend kết nối).</li>
+                <li>Pipeline có trích dẫn nguồn văn bản (citation).</li>
+            </ul>
+        </div>
+    </details>
+
+    <!-- TỔNG HỢP MODULE 2-4 -->
+    <details class="module" open>
+        <summary>
+            <div class="module-header">
+                <h2>📚 Tổng hợp Module 2-4: AI Application Engineering</h2>
+                <span class="duration">Recap trước khi vào ML Foundation</span>
+            </div>
+        </summary>
+
+        <div class="recap-box" style="padding: 1.5rem;">
+            <p style="margin-top:0;">Pipeline tổng: <strong>Text → Chunk → Embed → Vector DB → Hybrid Search → Re-rank → LLM → Answer</strong></p>
+
+            <h4>① Prompt Engineering (Module 2)</h4>
+            <ul style="padding-left: 1.2rem;">
+                <li>Tách <strong>SYSTEM</strong> (tĩnh: rules, schema, persona) vs <strong>USER</strong> (động: data)</li>
+                <li>Thiết kế JSON Schema cho output, dùng <code>response_format={"type":"json_object"}</code></li>
+                <li>Chain of Thought: thêm field <code>"reasoning"</code> trước data → giảm sai</li>
+                <li>Thư viện: <code>litellm.completion()</code>, model <code>gemini/gemini-2.0-flash</code>, <code>temperature=0.0</code> cho extraction</li>
+            </ul>
+
+            <h4>② Chống ảo giác - Hallucination (Module 2 - Tuần 5)</h4>
+            <ul style="padding-left: 1.2rem;">
+                <li><strong>Escape Hatch</strong> → cho phép model trả lời "không biết"</li>
+                <li><strong>Grounding</strong> → dùng tag <code>&lt;context&gt;</code>, cấm dùng kiến thức ngoài</li>
+                <li><strong>Confidence Score</strong> → HIGH/MEDIUM/LOW + gate cho human review</li>
+                <li><strong>Citation</strong> → bắt buộc trích nguồn</li>
+                <li><strong>Temperature = 0</strong> → giảm ngẫu nhiên</li>
+                <li>Validate lại số/ngày bằng Python regex sau khi LLM trả về</li>
+            </ul>
+
+            <h4>③ Context Window & Token (Module 2 - Tuần 5)</h4>
+            <ul style="padding-left: 1.2rem;">
+                <li><strong>Lost in the Middle</strong> → đặt info quan trọng ở ĐẦU/CUỐI prompt</li>
+                <li>Tiếng Việt tốn ~3x token so với tiếng Anh → ưu tiên English cho system prompt</li>
+                <li>Thư viện: <code>litellm.token_counter()</code>, <code>response.usage.prompt_tokens</code>, <code>tiktoken</code> (chỉ để học/visualize)</li>
+            </ul>
+
+            <h4>④ Embedding & Vector Math (Module 3 - Tuần 6)</h4>
+            <div class="math-formula" style="margin: 0.5rem 0;">cos(θ) = (A·B) / (|A|×|B|)</div>
+            <ul style="padding-left: 1.2rem;">
+                <li>1.0 = giống hệt | 0.0 = không liên quan | -1.0 = ngược nghĩa</li>
+                <li>Normalize vector trước → cos = dot product (nhanh hơn)</li>
+                <li>Thư viện: <code>litellm.embedding()</code>, model <code>gemini/gemini-embedding-2</code> (3072 dims), <code>numpy</code> (<code>np.dot</code>, <code>np.linalg.norm</code>)</li>
+            </ul>
+
+            <h4>⑤ Chunking (Module 3 - Tuần 7)</h4>
+            <ul style="padding-left: 1.2rem;">
+                <li><strong>Recursive Splitter</strong> (ưu tiên dùng): thử <code>\n\n</code> → <code>\n</code> → <code>". "</code> → <code>" "</code> → ký tự</li>
+                <li>Luôn có <strong>overlap</strong> (~50 chars) → tránh mất info ở ranh giới chunk</li>
+                <li>Sweet spot: 400-600 tokens/chunk</li>
+                <li>Thư viện: <code>langchain_text_splitters.RecursiveCharacterTextSplitter</code></li>
+            </ul>
+
+            <h4>⑥ Vector DB - pgvector (Module 3 - Tuần 7)</h4>
+            <ul style="padding-left: 1.2rem;">
+                <li>Setup: Docker <code>pgvector/pgvector:pg16</code> (≥0.8.x), <code>CREATE EXTENSION vector;</code></li>
+                <li>Cột: <code>embedding vector(3072)</code></li>
+                <li>Toán tử <code>&lt;=&gt;</code> = cosine distance (similarity = 1 - distance)</li>
+                <li>Index: HNSW (≤2000 dims) hoặc brute-force scan (data nhỏ)</li>
+            </ul>
+
+            <h4>⑦ Hybrid Search + Re-rank (Module 4 - Tuần 10-11)</h4>
+            <div class="math-formula" style="margin: 0.5rem 0;">RRF score = Σ 1 / (60 + rank)</div>
+            <ul style="padding-left: 1.2rem;">
+                <li>Vector Search (<code>&lt;=&gt;</code>) + Text Search (<code>to_tsvector('simple')</code>, BM25-like) → <code>FULL OUTER JOIN</code> → RRF</li>
+                <li>Re-rank bằng Cross-Encoder: <code>sentence_transformers.CrossEncoder("BAAI/bge-reranker-base")</code></li>
+                <li>Funnel: 100K docs → RRF top 50 → Cross-Encoder top 3 → LLM</li>
+            </ul>
+
+            <h4>📋 Bảng tra nhanh "Cần gì → dùng gì"</h4>
+            <table style="width:100%; border-collapse: collapse; margin-top: 0.5rem;">
+                <thead>
+                    <tr style="background:#f0fdf4;">
+                        <th style="text-align:left; padding:0.5rem; border:1px solid #bbf7d0;">Cần làm</th>
+                        <th style="text-align:left; padding:0.5rem; border:1px solid #bbf7d0;">Thư viện / Công cụ</th>
+                        <th style="text-align:left; padding:0.5rem; border:1px solid #bbf7d0;">Công thức / Khái niệm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Gọi LLM</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>litellm.completion</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">system/user role</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Trả JSON</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>response_format={"type":"json_object"}</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">JSON Schema</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Đếm token</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>litellm.token_counter</code> / <code>response.usage</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">—</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Tạo vector</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>litellm.embedding</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">text → 3072 dims</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">So sánh nghĩa</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>numpy</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">cos(θ)=A·B/(|A||B|)</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Cắt văn bản</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>langchain_text_splitters</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">overlap, recursive</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Lưu vector</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>pgvector</code> (Postgres)</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>&lt;=&gt;</code> cosine distance</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Tìm exact keyword</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>to_tsvector('simple')</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">BM25-like (ts_rank)</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Kết hợp 2 search</td><td style="padding:0.5rem; border:1px solid #e5e7eb;">RRF (tự viết SQL)</td><td style="padding:0.5rem; border:1px solid #e5e7eb;">Σ1/(60+rank)</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Lọc chính xác cuối</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>sentence_transformers.CrossEncoder</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">cross-attention score</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Giữ context chat</td><td style="padding:0.5rem; border:1px solid #e5e7eb;">list <code>messages[]</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">sliding window</td></tr>
+                </tbody>
+            </table>
+
+            <h4 style="margin-top:1.5rem;">🎯 3 nguyên tắc xuyên suốt</h4>
+            <ol style="padding-left: 1.2rem;">
+                <li><strong>Tách tĩnh/động</strong>: system=tĩnh, user=động | Index=offline, Query=online</li>
+                <li><strong>Funnel (thu hẹp dần)</strong>: 100K docs → RRF top 50 → CrossEncoder top 3 → LLM</li>
+                <li><strong>Không tin LLM 100%</strong>: temperature=0, escape hatch, confidence score, validate output bằng Python</li>
+            </ol>
+        </div>
+    </details>
+
+    <!-- MODULE 5 -->
+    <details class="module">
+        <summary>
+            <div class="module-header">
+                <h2>🧱 Module 5: ML Foundation for AI Engineer</h2>
+                <span class="duration">Tuần 12 - 15</span>
+            </div>
+        </summary>
+        
+        <details class="week-details">
+            <summary><div class="week-title">📅 Tuần 12: Machine Learning Cơ Bản</div></summary>
+            <div class="task-list">
+                <ul>
+                    <li><input type="checkbox" id="m5-w12-d1"><div class="task-content"><span class="task-title">Giới thiệu ML Flow</span><span class="task-desc">Sự khác biệt của ML truyền thống so với gọi API LLM.</span></div></li>
+                    <li><input type="checkbox" id="m5-w12-d2"><div class="task-content"><span class="task-title">Regression (Hồi quy)</span><span class="task-desc">Dự đoán một giá trị liên tục. Code mẫu Linear Regression (Scikit-learn).</span></div></li>
+                    <li><input type="checkbox" id="m5-w12-d3"><div class="task-content"><span class="task-title">Classification (Phân loại)</span><span class="task-desc">Dự đoán nhãn rời rạc (vd: Spam/Not Spam). Logistic Regression.</span></div></li>
+                    <li><input type="checkbox" id="m5-w12-d4"><div class="task-content"><span class="task-title">Data Preprocessing</span><span class="task-desc">Xử lý null, chuẩn hóa dữ liệu (StandardScaler).</span></div></li>
+                    <li><input type="checkbox" id="m5-w12-d5"><div class="task-content"><span class="task-title">Thực hành Scikit-learn</span><span class="task-desc">Train model cơ bản trên tập dataset tabular có sẵn.</span></div></li>
+                </ul>
+            </div>
+        </details>
+
+        <details class="week-details">
+            <summary><div class="week-title">📅 Tuần 13: Feature & Data Splitting</div></summary>
+            <div class="task-list">
+                <ul>
+                    <li><input type="checkbox" id="m5-w13-d1"><div class="task-content"><span class="task-title">Feature Engineering</span><span class="task-desc">Cách chọn lọc và biến đổi các đặc trưng để model học tốt hơn.</span></div></li>
+                    <li><input type="checkbox" id="m5-w13-d2"><div class="task-content"><span class="task-title">Train / Validation / Test Split</span><span class="task-desc">Nguyên tắc không bao giờ test model trên tập dữ liệu đã train.</span></div></li>
+                    <li><input type="checkbox" id="m5-w13-d3"><div class="task-content"><span class="task-title">Metrics Đánh Giá Phân Loại</span><span class="task-desc">Accuracy, Precision, Recall, F1-Score. Hiểu trade-off.</span></div></li>
+                    <li><input type="checkbox" id="m5-w13-d4"><div class="task-content"><span class="task-title">Cross-Validation</span><span class="task-desc">K-fold cross validation để đánh giá model khách quan.</span></div></li>
+                    <li><input type="checkbox" id="m5-w13-d5"><div class="task-content"><span class="task-title">Project: Text Classification Data</span><span class="task-desc">Chuẩn bị dataset (ví dụ: Spam SMS) để huấn luyện.</span></div></li>
+                </ul>
+            </div>
+        </details>
+
+        <details class="week-details">
+            <summary><div class="week-title">📅 Tuần 14: Toán Học của Việc "Học"</div></summary>
+            <div class="task-list">
+                <ul>
+                    <li><input type="checkbox" id="m5-w14-d1"><div class="task-content"><span class="task-title">Loss Function (Hàm suy hao)</span><span class="task-desc">Công cụ đo lường sai số của model. MSE, Cross-Entropy.</span></div></li>
+                    <li><input type="checkbox" id="m5-w14-d2"><div class="task-content"><span class="task-title">Đạo hàm cơ bản (Calculus)</span><span class="task-desc">Ôn tập đạo hàm: tốc độ thay đổi và chiều hướng.</span></div></li>
+                    <li><input type="checkbox" id="m5-w14-d3"><div class="task-content"><span class="task-title">Gradient Descent (Cốt lõi)</span><span class="task-desc">Hiểu cách model tự sửa sai. <br><code class="math-formula">θ := θ - α∇J(θ)</code></span></div></li>
+                    <li><input type="checkbox" id="m5-w14-d4"><div class="task-content"><span class="task-title">Learning Rate (α)</span><span class="task-desc">Bước nhảy. Nhảy quá to (overshoot), quá nhỏ (lâu tới đích).</span></div></li>
+                    <li><input type="checkbox" id="m5-w14-d5"><div class="task-content"><span class="task-title">Trực quan hóa quá trình hội tụ</span><span class="task-desc">Vẽ đồ thị Loss function giảm dần theo các epoch.</span></div></li>
+                </ul>
+            </div>
+        </details>
+        
+        <details class="week-details">
+            <summary><div class="week-title">📅 Tuần 15: Overfitting & Đóng gói Model</div></summary>
+            <div class="task-list">
+                <ul>
+                    <li><input type="checkbox" id="m5-w15-d1"><div class="task-content"><span class="task-title">Overfitting vs Underfitting</span><span class="task-desc">Hiện tượng "học vẹt" của model và cách nhận biết.</span></div></li>
+                    <li><input type="checkbox" id="m5-w15-d2"><div class="task-content"><span class="task-title">Regularization techniques</span><span class="task-desc">Lasso (L1), Ridge (L2) cơ bản để chống học vẹt.</span></div></li>
+                    <li><input type="checkbox" id="m5-w15-d3"><div class="task-content"><span class="task-title">Huấn luyện Spam Classifier</span><span class="task-desc">Train model TF-IDF + Naive Bayes/Random Forest phân loại văn bản.</span></div></li>
+                    <li><input type="checkbox" id="m5-w15-d4"><div class="task-content"><span class="task-title">Lưu model (Pickle/Joblib)</span><span class="task-desc">Cách xuất model ra file để dùng lại mà không cần train lại.</span></div></li>
+                    <li><input type="checkbox" id="m5-w15-d5"><div class="task-content"><span class="task-title">Tích hợp vào FastAPI</span><span class="task-desc">Tạo endpoint `/predict` load model đã train và trả về kết quả Classification.</span></div></li>
+                </ul>
+            </div>
+        </details>
+
+        <div class="output-box">
+            <h4>🎯 OUTPUT CẦN ĐẠT MODULE 5</h4>
+            <ul style="padding-left: 1rem; list-style-type: disc;">
+                <li>Mini-project: Tabular Prediction chạy thực tế.</li>
+                <li>Nắm vững bản chất Loss Function & Gradient Descent.</li>
+            </ul>
+        </div>
+    </details>
+
+    <!-- MODULE 6 -->
+    <details class="module">
+        <summary>
+            <div class="module-header">
+                <h2>🧱 Module 6: AI System Thinking</h2>
+                <span class="duration">Tuần 16 - 18</span>
+            </div>
+        </summary>
+        
+        <details class="week-details">
+            <summary><div class="week-title">📅 Tuần 16: Tối ưu Độ trễ (Latency) & Caching</div></summary>
+            <div class="task-list">
+                <ul>
+                    <li><input type="checkbox" id="m6-w16-d1"><div class="task-content"><span class="task-title">Phân tích Latency của LLM</span><span class="task-desc">Tại sao TTFT (Time To First Token) lại quan trọng cho UX?</span></div></li>
+                    <li><input type="checkbox" id="m6-w16-d2"><div class="task-content"><span class="task-title">Streaming Response</span><span class="task-desc">Sửa endpoint FastAPI RAG để trả về dạng Stream (từng chữ một).</span></div></li>
+                    <li><input type="checkbox" id="m6-w16-d3"><div class="task-content"><span class="task-title">Semantic Caching - Concept</span><span class="task-desc">Không gọi LLM nếu user hỏi câu có ý nghĩa tương đương câu đã hỏi.</span></div></li>
+                    <li><input type="checkbox" id="m6-w16-d4"><div class="task-content"><span class="task-title">Triển khai Caching (Redis/In-memory)</span><span class="task-desc">Code logic check khoảng cách vector câu hỏi, nếu < ngưỡng -> Cache Hit.</span></div></li>
+                    <li><input type="checkbox" id="m6-w16-d5"><div class="task-content"><span class="task-title">Rate Limiting</span><span class="task-desc">Bảo vệ API của bạn khỏi abuse. Chặn giới hạn request/phút.</span></div></li>
+                </ul>
+            </div>
+        </details>
+
+        <details class="week-details">
+            <summary><div class="week-title">📅 Tuần 17: Tính Ổn định & Bất đồng bộ</div></summary>
+            <div class="task-list">
+                <ul>
+                    <li><input type="checkbox" id="m6-w17-d1"><div class="task-content"><span class="task-title">Thiết kế Retry Mechanism</span><span class="task-desc">Sử dụng thư viện <code>tenacity</code> để tự động retry khi API LLM bị lỗi.</span></div></li>
+                    <li><input type="checkbox" id="m6-w17-d2"><div class="task-content"><span class="task-title">Fallbacks</span><span class="task-desc">Nếu OpenAI lỗi, tự động chuyển sang gọi Gemini/Claude qua cấu hình LiteLLM.</span></div></li>
+                    <li><input type="checkbox" id="m6-w17-d3"><div class="task-content"><span class="task-title">Message Queues Concept</span><span class="task-desc">RabbitMQ hoặc Celery: Xử lý file PDF nặng mà không crash server.</span></div></li>
+                    <li><input type="checkbox" id="m6-w17-d4"><div class="task-content"><span class="task-title">Log System (Observability)</span><span class="task-desc">Ghi log request, response, cost, latency chuẩn chỉ vào file.</span></div></li>
+                    <li><input type="checkbox" id="m6-w17-d5"><div class="task-content"><span class="task-title">Security & API Keys</span><span class="task-desc">Cách quản lý Key tập trung, luân chuyển key (Key rotation).</span></div></li>
+                </ul>
+            </div>
+        </details>
+
+        <details class="week-details">
+            <summary><div class="week-title">📅 Tuần 18: Tích hợp & Ôn Tập Tổng Thể</div></summary>
+            <div class="task-list">
+                <ul>
+                    <li><input type="checkbox" id="m6-w18-d1"><div class="task-content"><span class="task-title">Code Review Toàn Hệ Thống</span><span class="task-desc">Dọn dẹp mã nguồn, check lại các module ghép nối.</span></div></li>
+                    <li><input type="checkbox" id="m6-w18-d2"><div class="task-content"><span class="task-title">Tối ưu Deployment Workflow</span><span class="task-desc">Setup CI/CD cơ bản hoặc cấu trúc thư mục chuẩn cho VPS deployment.</span></div></li>
+                    <li><input type="checkbox" id="m6-w18-d3"><div class="task-content"><span class="task-title">Test luồng End-to-End</span><span class="task-desc">Từ upload PDF -> Parsing Queue -> Insert DB -> Chat Stream -> LLM Fallback.</span></div></li>
+                    <li><input type="checkbox" id="m6-w18-d4"><div class="task-content"><span class="task-title">Documentation (Tài liệu hóa)</span><span class="task-desc">Viết README.md và Swagger UI cho API một cách chuyên nghiệp.</span></div></li>
+                    <li><input type="checkbox" id="m6-w18-d5"><div class="task-content"><span class="task-title">Định hướng Bước Tiếp Theo</span><span class="task-desc">Lựa chọn specialization (Vision, LLM Internals, hoặc Agent Workflows).</span></div></li>
+                </ul>
+            </div>
+        </details>
+
+        <div class="output-box">
+            <h4>🎯 OUTPUT CẦN ĐẠT MODULE 6</h4>
+            <ul style="padding-left: 1rem; list-style-type: disc;">
+                <li>Production-style AI API (sẵn sàng chịu tải cho nội bộ doanh nghiệp).</li>
+                <li>Bước chuyển mình hoàn toàn từ "Người dùng AI" sang "AI System Builder".</li>
+            </ul>
+        </div>
+    </details>
+
+    <!-- TỔNG HỢP MODULE 5-6 -->
+    <details class="module" open>
+        <summary>
+            <div class="module-header">
+                <h2>📚 Tổng hợp Module 5-6: ML Foundation + AI System Thinking</h2>
+                <span class="duration">Cheat sheet lý thuyết — tra cứu nhanh</span>
+            </div>
+        </summary>
+
+        <div class="recap-box" style="padding: 1.5rem;">
+            <p style="margin-top:0;">Module 5 = "AI học bằng cách nào" (toán) | Module 6 = "đưa AI lên production an toàn, ổn định, rẻ"</p>
+
+            <h3 style="margin-top:1.5rem; border-bottom:2px solid #e5e7eb; padding-bottom:0.4rem;">🧱 MODULE 5: ML FOUNDATION</h3>
+
+            <h4>① ML Flow vs LLM Flow (Tuần 12)</h4>
+            <ul>
+                <li>LLM: gọi model có sẵn, không sửa được bên trong, output = text</li>
+                <li>ML truyền thống: có data (X, y) → <strong>train</strong> model nhỏ tự học quy luật → output = số/nhãn</li>
+                <li><code>model.fit(X, y)</code> = học | <code>model.predict(X_new)</code> = áp dụng</li>
+            </ul>
+
+            <h4>② Linear Regression — dự đoán SỐ (Tuần 12)</h4>
+            <div class="math-formula" style="margin: 0.5rem 0;">y = w·x + b</div>
+            <ul>
+                <li>w = weight (độ dốc), b = bias (điểm chặn)</li>
+                <li>X luôn phải 2D: <code>X.reshape(-1, 1)</code> — shape (N,) → (N,1)</li>
+                <li>Thư viện: <code>from sklearn.linear_model import LinearRegression</code></li>
+                <li><code>model.coef_</code> = w, <code>model.intercept_</code> = b</li>
+            </ul>
+
+            <h4>③ Logistic Regression — dự đoán NHÃN (Tuần 12)</h4>
+            <div class="math-formula" style="margin: 0.5rem 0;">p = 1 / (1 + e^(-(w·x + b)))</div>
+            <ul>
+                <li><strong>Sigmoid function</strong>: chuyển số thực bất kỳ → giá trị (0,1) = xác suất</li>
+                <li>p &gt; 0.5 → nhãn 1 (Spam), p ≤ 0.5 → nhãn 0 (Not Spam)</li>
+                <li>Thư viện: <code>from sklearn.linear_model import LogisticRegression</code></li>
+                <li>Dùng cho: phân loại email khẩn cấp, spam/ham, sentiment...</li>
+            </ul>
+
+            <h4>④ Data Preprocessing (Tuần 12)</h4>
+            <ul>
+                <li>Xử lý null: <code>df.fillna()</code>, <code>df.dropna()</code></li>
+                <li><strong>StandardScaler</strong>: chuẩn hóa data về mean=0, std=1 → các feature có scale khác nhau (tuổi vs lương) không "lấn" nhau</li>
+                <li>Thư viện: <code>from sklearn.preprocessing import StandardScaler</code></li>
+                <li><code>scaler.fit_transform(X_train)</code> rồi <code>scaler.transform(X_test)</code> — KHÔNG fit lại trên test</li>
+            </ul>
+
+            <h4>⑤ Feature Engineering (Tuần 13)</h4>
+            <ul>
+                <li>Chọn/biến đổi đặc trưng giúp model học tốt hơn</li>
+                <li>Ví dụ: từ "ngày sinh" → tạo feature "tuổi"; từ "email content" → "độ dài text", "số từ viết hoa", "có link không"</li>
+                <li>Feature tốt thường quan trọng hơn model phức tạp</li>
+            </ul>
+
+            <h4>⑥ Train / Validation / Test Split (Tuần 13)</h4>
+            <ul>
+                <li><strong>Nguyên tắc vàng</strong>: KHÔNG BAO GIỜ test model trên data đã dùng để train</li>
+                <li>Train (~70%): để model học | Validation (~15%): để tune hyperparameter | Test (~15%): đánh giá cuối, chỉ dùng 1 lần</li>
+                <li>Thư viện: <code>from sklearn.model_selection import train_test_split</code></li>
+                <li><code>train_test_split(X, y, test_size=0.2, random_state=42)</code></li>
+            </ul>
+
+            <h4>⑦ Metrics đánh giá Classification (Tuần 13)</h4>
+            <table style="width:100%; border-collapse: collapse; margin-top: 0.5rem;">
+                <thead>
+                    <tr style="background:#f0fdf4;">
+                        <th style="text-align:left; padding:0.5rem; border:1px solid #bbf7d0;">Metric</th>
+                        <th style="text-align:left; padding:0.5rem; border:1px solid #bbf7d0;">Công thức</th>
+                        <th style="text-align:left; padding:0.5rem; border:1px solid #bbf7d0;">Khi nào quan trọng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Accuracy</td><td style="padding:0.5rem; border:1px solid #e5e7eb;">(TP+TN)/Total</td><td style="padding:0.5rem; border:1px solid #e5e7eb;">Data cân bằng giữa các nhãn</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Precision</td><td style="padding:0.5rem; border:1px solid #e5e7eb;">TP/(TP+FP)</td><td style="padding:0.5rem; border:1px solid #e5e7eb;">Báo sai (FP) tốn kém — vd: chặn email không phải spam</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Recall</td><td style="padding:0.5rem; border:1px solid #e5e7eb;">TP/(TP+FN)</td><td style="padding:0.5rem; border:1px solid #e5e7eb;">Bỏ sót (FN) nguy hiểm — vd: bỏ sót giao dịch gian lận</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">F1-Score</td><td style="padding:0.5rem; border:1px solid #e5e7eb;">2·(P·R)/(P+R)</td><td style="padding:0.5rem; border:1px solid #e5e7eb;">Cân bằng Precision &amp; Recall, data lệch nhãn</td></tr>
+                </tbody>
+            </table>
+            <p>Thư viện: <code>from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report</code></p>
+
+            <h4>⑧ Cross-Validation (Tuần 13)</h4>
+            <ul>
+                <li><strong>K-fold</strong>: chia data thành K phần, train K lần (mỗi lần 1 phần làm validation, K-1 phần làm train)</li>
+                <li>→ Đánh giá model khách quan hơn 1 lần split duy nhất (tránh "ăn may" với 1 cách chia)</li>
+                <li>Thư viện: <code>from sklearn.model_selection import cross_val_score</code></li>
+                <li><code>cross_val_score(model, X, y, cv=5)</code> → 5-fold, trả về 5 điểm accuracy</li>
+            </ul>
+
+            <h4>⑨ Loss Function (Tuần 14)</h4>
+            <ul>
+                <li><strong>Loss</strong> = thước đo "model sai bao nhiêu" — số càng nhỏ, model dự đoán càng đúng</li>
+                <li><strong>MSE (Mean Squared Error)</strong> — dùng cho Regression:</li>
+            </ul>
+            <div class="math-formula" style="margin: 0.5rem 0;">MSE = (1/n) Σ (y_pred - y_actual)²</div>
+            <ul>
+                <li><strong>Cross-Entropy</strong> — dùng cho Classification: đo "độ lệch" giữa xác suất dự đoán và nhãn thật (0 hoặc 1)</li>
+                <li>Train = quá trình tìm w, b để <strong>Loss nhỏ nhất</strong></li>
+            </ul>
+
+            <h4>⑩ Gradient Descent — CỐT LÕI của "AI học" (Tuần 14)</h4>
+            <div class="math-formula" style="margin: 0.5rem 0;">θ := θ - α·∇J(θ)</div>
+            <ul>
+                <li>θ (theta) = tham số model (w, b) | J(θ) = Loss function | ∇J(θ) = gradient (đạo hàm — hướng dốc nhất của Loss)</li>
+                <li><strong>Đạo hàm</strong> cho biết "nếu tăng/giảm θ một chút, Loss thay đổi thế nào" → biết nên đi hướng nào</li>
+                <li>Cơ chế: tính gradient → đi NGƯỢC hướng gradient (dấu "-") → Loss giảm dần → lặp lại (mỗi lần lặp = 1 <strong>epoch</strong>)</li>
+                <li>Đây là cơ chế <strong>mọi mô hình AI</strong> (từ Linear Regression đến LLM khổng lồ) dùng để "học"</li>
+            </ul>
+
+            <h4>⑪ Learning Rate α (Tuần 14)</h4>
+            <ul>
+                <li>α = "bước nhảy" mỗi lần cập nhật θ</li>
+                <li>α quá lớn → <strong>overshoot</strong>, nhảy qua mất điểm tối ưu, Loss dao động không giảm</li>
+                <li>α quá nhỏ → học rất chậm, cần nhiều epoch mới hội tụ</li>
+                <li>Trực quan hóa: vẽ đồ thị Loss theo epoch — Loss giảm dần mượt = α hợp lý; Loss zigzag/tăng = α quá lớn</li>
+            </ul>
+
+            <h4>⑫ Overfitting vs Underfitting (Tuần 15)</h4>
+            <ul>
+                <li><strong>Overfitting</strong> ("học vẹt"): accuracy train rất cao, accuracy test thấp → model học cả "nhiễu" của data train, không generalize được</li>
+                <li><strong>Underfitting</strong>: accuracy train VÀ test đều thấp → model quá đơn giản, chưa học được pattern</li>
+                <li>Dấu hiệu nhận biết: so sánh train score vs validation score — gap lớn = overfitting</li>
+            </ul>
+
+            <h4>⑬ Regularization — chống học vẹt (Tuần 15)</h4>
+            <ul>
+                <li><strong>L1 (Lasso)</strong>: phạt theo |w| → có thể đưa weight về 0 hẳn → tự loại bớt feature không quan trọng</li>
+                <li><strong>L2 (Ridge)</strong>: phạt theo w² → giảm độ lớn weight đều, không đưa về 0 hẳn</li>
+                <li>Ý tưởng chung: thêm "hình phạt" vào Loss function nếu w quá lớn → model đơn giản hơn, ít overfit hơn</li>
+                <li>Thư viện: <code>from sklearn.linear_model import Lasso, Ridge</code></li>
+            </ul>
+
+            <h4>⑭ Lưu Model & Tích hợp FastAPI (Tuần 15)</h4>
+            <ul>
+                <li>Sau khi train xong → lưu model ra file, KHÔNG train lại mỗi lần dùng</li>
+                <li>Thư viện: <code>joblib.dump(model, "model.pkl")</code> và <code>joblib.load("model.pkl")</code> (ưu tiên hơn pickle cho sklearn)</li>
+                <li>Pattern thực tế — Spam Classifier: <code>TfidfVectorizer</code> (text → số) + <code>MultinomialNB</code> hoặc <code>RandomForestClassifier</code></li>
+                <li>FastAPI endpoint <code>/predict</code>: load model 1 lần lúc start server → mỗi request chỉ gọi <code>model.predict()</code>, không load lại</li>
+            </ul>
+
+            <h3 style="margin-top:2rem; border-bottom:2px solid #e5e7eb; padding-bottom:0.4rem;">🧱 MODULE 6: AI SYSTEM THINKING</h3>
+
+            <h4>① Latency &amp; Streaming (Tuần 16 — đã học)</h4>
+            <ul>
+                <li><strong>TTFT (Time To First Token)</strong> = metric UX quan trọng nhất, không phải tổng thời gian response</li>
+                <li><code>completion(..., stream=True)</code> → response là generator, lấy <code>chunk.choices[0].delta.content</code></li>
+                <li>FastAPI: <code>StreamingResponse(generator, media_type="text/event-stream")</code>, format SSE <code>"data: ...\n\n"</code></li>
+                <li>⚠️ JSON structured output (<code>response_format=json_object</code>) KHÓ stream → extraction/classification không stream; chat trực tiếp stream text thường, metadata gửi riêng sau</li>
+            </ul>
+
+            <h4>② Semantic Caching (Tuần 16)</h4>
+            <ul>
+                <li>Ý tưởng: nếu câu hỏi mới có <strong>embedding gần giống</strong> câu hỏi đã hỏi trước (cosine similarity &gt; ngưỡng, vd 0.95) → trả lại câu trả lời cũ, KHÔNG gọi LLM</li>
+                <li>Tiết kiệm: chi phí API + latency (cache hit = trả lời gần như instant)</li>
+                <li>Lưu trữ: Redis (production) hoặc dict/in-memory (prototype)</li>
+                <li>Logic: embed query mới → so cosine với các query đã cache → similarity &gt; threshold → Cache Hit; ngược lại → gọi LLM, lưu lại vào cache</li>
+            </ul>
+
+            <h4>③ Rate Limiting (Tuần 16)</h4>
+            <ul>
+                <li>Bảo vệ API khỏi bị abuse — giới hạn số request/phút theo user/IP</li>
+                <li>Thư viện FastAPI: <code>slowapi</code> (dựa trên <code>limits</code>)</li>
+                <li>Ví dụ: <code>@limiter.limit("10/minute")</code> trên endpoint</li>
+            </ul>
+
+            <h4>④ Retry Mechanism (Tuần 17)</h4>
+            <ul>
+                <li>LLM API đôi khi lỗi tạm thời (timeout, 429, 503) → tự động thử lại thay vì fail ngay</li>
+                <li>Thư viện: <code>tenacity</code></li>
+                <li><code>@retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1))</code> → thử lại 3 lần, thời gian chờ tăng dần (exponential backoff)</li>
+            </ul>
+
+            <h4>⑤ Fallbacks (Tuần 17)</h4>
+            <ul>
+                <li>Nếu provider chính (vd Gemini) lỗi/hết quota → tự động chuyển sang provider khác (Claude, OpenAI)</li>
+                <li>LiteLLM hỗ trợ <code>fallbacks=[...]</code> trong <code>completion()</code> — tự thử lần lượt theo danh sách model</li>
+                <li>Đây là pattern đã gặp thực tế khi Gemini bị 429 trong Module 2-3</li>
+            </ul>
+
+            <h4>⑥ Message Queue (Tuần 17)</h4>
+            <ul>
+                <li>Bài toán: xử lý file PDF nặng (embedding hàng nghìn chunks) → không thể block request HTTP chờ xử lý xong</li>
+                <li>Giải pháp: đẩy task vào queue (RabbitMQ/Redis) → worker riêng xử lý nền → API trả response ngay "đang xử lý"</li>
+                <li>Thư viện phổ biến: <code>Celery</code> (worker) + <code>RabbitMQ</code> hoặc <code>Redis</code> (broker)</li>
+            </ul>
+
+            <h4>⑦ Logging / Observability (Tuần 17)</h4>
+            <ul>
+                <li>Ghi log mỗi request: input, output, <strong>cost</strong> (từ <code>response.usage</code>), <strong>latency</strong>, model dùng, timestamp</li>
+                <li>Mục đích: debug khi có lỗi, theo dõi chi phí theo thời gian, phát hiện bất thường</li>
+                <li>Có thể dùng <code>logging</code> module của Python ghi ra file JSON, hoặc tool như Langfuse/LangSmith cho LLM-specific observability</li>
+            </ul>
+
+            <h4>⑧ Security &amp; API Key Management (Tuần 17)</h4>
+            <ul>
+                <li>Không hardcode key trong code (đã học từ Module 2: dùng <code>.env</code> + <code>load_dotenv()</code>)</li>
+                <li><strong>Key rotation</strong>: định kỳ đổi API key, không dùng 1 key duy nhất mãi</li>
+                <li>Production: dùng secret manager (AWS Secrets Manager, Vault) thay vì file <code>.env</code> trên server</li>
+            </ul>
+
+            <h4>⑨ Tích hợp &amp; Deployment (Tuần 18)</h4>
+            <ul>
+                <li>Code Review toàn hệ thống: dọn dẹp, check các module đã ghép nối đúng chưa (Embedding → pgvector → Hybrid Search → Rerank → LLM → Memory)</li>
+                <li>CI/CD cơ bản hoặc cấu trúc thư mục chuẩn để deploy lên VPS</li>
+                <li>Test End-to-End: Upload PDF → Parsing Queue → Insert DB → Chat Stream → LLM Fallback — toàn bộ pipeline phải chạy thông suốt</li>
+                <li>Documentation: README.md rõ ràng + Swagger UI (FastAPI tự sinh tại <code>/docs</code>) cho API</li>
+            </ul>
+
+            <h4 style="margin-top:1.5rem;">📋 Bảng tra nhanh "Cần gì → dùng gì" (Module 5-6)</h4>
+            <table style="width:100%; border-collapse: collapse; margin-top: 0.5rem;">
+                <thead>
+                    <tr style="background:#f0fdf4;">
+                        <th style="text-align:left; padding:0.5rem; border:1px solid #bbf7d0;">Cần làm</th>
+                        <th style="text-align:left; padding:0.5rem; border:1px solid #bbf7d0;">Thư viện / Công cụ</th>
+                        <th style="text-align:left; padding:0.5rem; border:1px solid #bbf7d0;">Công thức / Khái niệm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Dự đoán số</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>sklearn.linear_model.LinearRegression</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">y = w·x + b</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Dự đoán nhãn</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>sklearn.linear_model.LogisticRegression</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">sigmoid(w·x+b)</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Chuẩn hóa data</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>sklearn.preprocessing.StandardScaler</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">mean=0, std=1</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Chia data</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>train_test_split</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">train/val/test</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Đánh giá model</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>sklearn.metrics</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">Accuracy/Precision/Recall/F1</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Đo sai số</td><td style="padding:0.5rem; border:1px solid #e5e7eb;">—</td><td style="padding:0.5rem; border:1px solid #e5e7eb;">MSE (regression), Cross-Entropy (classification)</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Tối ưu model</td><td style="padding:0.5rem; border:1px solid #e5e7eb;">—</td><td style="padding:0.5rem; border:1px solid #e5e7eb;">θ := θ - α∇J(θ)</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Chống overfit</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>Lasso (L1) / Ridge (L2)</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">phạt theo |w| hoặc w²</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Lưu/load model</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>joblib.dump / joblib.load</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">.pkl file</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Stream response</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>stream=True</code>, <code>StreamingResponse</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">TTFT, SSE</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Tránh gọi LLM lặp</td><td style="padding:0.5rem; border:1px solid #e5e7eb;">Redis + embedding</td><td style="padding:0.5rem; border:1px solid #e5e7eb;">Semantic Caching (cosine &gt; threshold)</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Giới hạn request</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>slowapi</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">N requests/minute</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Tự thử lại khi lỗi</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>tenacity</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">retry + exponential backoff</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Đổi provider khi lỗi</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>litellm fallbacks=[...]</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">Fallback chain</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Xử lý task nặng nền</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>Celery + RabbitMQ/Redis</code></td><td style="padding:0.5rem; border:1px solid #e5e7eb;">Message Queue</td></tr>
+                    <tr><td style="padding:0.5rem; border:1px solid #e5e7eb;">Theo dõi chi phí/lỗi</td><td style="padding:0.5rem; border:1px solid #e5e7eb;"><code>logging</code>, Langfuse</td><td style="padding:0.5rem; border:1px solid #e5e7eb;">cost, latency, response.usage</td></tr>
+                </tbody>
+            </table>
+
+            <h4 style="margin-top:1.5rem;">🎯 3 nguyên tắc xuyên suốt Module 5-6</h4>
+            <ol>
+                <li><strong>"Học" = tối ưu Loss bằng Gradient Descent</strong> — mọi model từ Linear Regression đến LLM khổng lồ đều dùng nguyên lý này</li>
+                <li><strong>Không bao giờ đánh giá model trên data đã train</strong> — train/val/test split + cross-validation là bắt buộc</li>
+                <li><strong>Production AI = giả định mọi thứ có thể lỗi</strong> — retry, fallback, cache, rate limit, logging đều nhằm hệ thống vẫn chạy được khi 1 phần bị lỗi</li>
+            </ol>
+        </div>
+    </details>
+
+</div>
+
+<script>
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const progressBar = document.getElementById('overall-progress-bar');
+    const progressText = document.getElementById('overall-progress-text');
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Load saved state from LocalStorage
+        checkboxes.forEach((cb, index) => {
+            const savedState = localStorage.getItem('roadmap_ai_cb_' + index);
+            if (savedState === 'true') {
+                cb.checked = true;
+            }
+
+            // Save state on change
+            cb.addEventListener('change', () => {
+                localStorage.setItem('roadmap_ai_cb_' + index, cb.checked);
+                updateProgress();
+            });
+        });
+
+        updateProgress();
+    });
+
+    function updateProgress() {
+        const total = checkboxes.length;
+        const checkedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+        const percentage = total === 0 ? 0 : Math.round((checkedCount / total) * 100);
+        
+        progressBar.style.width = percentage + '%';
+        progressText.innerText = percentage + '%';
+        
+        if(percentage === 100) {
+            progressText.innerText = '100% - HOÀN THÀNH XUẤT SẮC! 🎉';
+        }
+    }
+
+    // Tính năng XUẤT dữ liệu
+    function exportProgress() {
+        let data = {};
+        checkboxes.forEach((cb, index) => {
+            data['roadmap_ai_cb_' + index] = cb.checked;
+        });
+        
+        const dataStr = JSON.stringify(data);
+        const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+        
+        const exportFileDefaultName = 'tien_do_hoc_ai.json';
+        
+        const linkElement = document.createElement('a');
+        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        linkElement.click();
+    }
+
+    // Tính năng NHẬP dữ liệu
+    function importProgress(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = JSON.parse(e.target.result);
+                checkboxes.forEach((cb, index) => {
+                    const key = 'roadmap_ai_cb_' + index;
+                    if (data[key] !== undefined) {
+                        cb.checked = data[key];
+                        localStorage.setItem(key, data[key]); // Lưu lại vào LocalStorage hiện tại
+                    }
+                });
+                updateProgress();
+                alert("✅ Đã tải lại tiến độ học tập thành công!");
+            } catch (err) {
+                alert("❌ Lỗi đọc file. Vui lòng chọn đúng file JSON tiến độ.");
+            }
+        };
+        reader.readAsText(file);
+        
+        // Reset input file để có thể chọn lại cùng 1 file nếu cần
+        event.target.value = '';
+    }
+</script>
+
+</body>
+</html>
